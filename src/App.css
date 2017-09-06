@@ -3,12 +3,24 @@
   display:none;
 }
 
+.background-image {
+  position: absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  background: url("http://res.cloudinary.com/dzo2s4ovl/image/upload/v1504676017/galaxy-wallpaper-downsized_juxx26.jpg") no-repeat center;
+  background-size: cover;
+  z-index:-1000;
+}
+
 body {
   font-family: "Helvetica", sans-serif;
 }
 
 h1 {
   text-align: center;
+  color:white;
 }
 
 h2 {
@@ -32,6 +44,17 @@ textarea:focus {
   height: 600px;
   position: relative;
   z-index:10;
+}
+
+.phone-backdrop {
+  background-color: white;
+  z-index:-500;
+  position: absolute;
+  top:140px;
+  left:50%;
+  width:270px;
+  height:480px;
+  transform:translateX(-50%);
 }
 
 .screen-header {

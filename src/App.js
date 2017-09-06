@@ -30,16 +30,11 @@ class App extends React.Component {
     this.saveToken = this.saveToken.bind(this);
   }
 
-  componentDidMount() {
-
-  }
-
   saveToken() {
     let apiToken = $(".token-entry").val();
     this.setState({
       apiToken: apiToken
     }, () => {
-      console.log("api token state: ", this.state.apiToken);
       this.makeContactListRequest();
     });
     $(".token-modal-background").addClass("hidden");
@@ -54,7 +49,6 @@ class App extends React.Component {
         this.setState({
           contactData: data['data']
         });
-        console.log("this.state.contactData: ", this.state.contactData);
         this.renderOutContacts(data['data']);
       }
     });
@@ -141,8 +135,6 @@ class App extends React.Component {
               }
             }),
       success: (data) => {
-        console.log("success");
-        console.log(data);
         this.revealMessageSuccess();
         setTimeout( () => {
           this.hideMessageSuccess();
@@ -150,8 +142,6 @@ class App extends React.Component {
         },1500);
       },
       error: (xhr) => {
-        console.log("error");
-        console.log(xhr);
         this.revealMessageFailure();
         setTimeout( () => {
           this.hideMessageFailure();
@@ -174,8 +164,10 @@ class App extends React.Component {
   render() {
     return (
       <div className="master-container">
-        <h1>Now We Do React!</h1>
+        <div className="background-image"></div>
+        <h1>Send Messages in React!</h1>
         <div className="phone-image"></div>
+        <div className="phone-backdrop"></div>
         <div className="screen-header">
           <h2>React 6</h2>
         </div>
