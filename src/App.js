@@ -22,13 +22,31 @@ class App extends React.Component {
     this.revealMessageContainer = this.revealMessageContainer.bind(this);
     this.hideMessageContainer = this.hideMessageContainer.bind(this);
     this.makeSMSRequest = this.makeSMSRequest.bind(this);
+    this.makeContactListRequest = this.makeContactListRequest.bind(this);
     this.revealMessageSuccess = this.revealMessageSuccess.bind(this);
     this.hideMessageSuccess = this.hideMessageSuccess.bind(this);
     this.revealMessageFailure = this.revealMessageFailure.bind(this);
     this.hideMessageFailure = this.hideMessageFailure.bind(this);
+    this.saveToken = this.saveToken.bind(this);
   }
 
   componentDidMount() {
+
+  }
+
+  saveToken() {
+    let apiToken = $(".token-entry").val();
+    this.setState({
+      apiToken: apiToken
+    }, () => {
+      console.log("api token state: ", this.state.apiToken);
+      this.makeContactListRequest();
+    });
+    $(".token-modal-background").addClass("hidden");
+    $(".token-modal-container").addClass("hidden");
+  }
+
+  makeContactListRequest() {
     $.ajax({
       method:"GET",
       url: "https://stage.skipio.com/api/v2/contacts?token=" + this.state.apiToken + "&page=1",
@@ -163,6 +181,17 @@ class App extends React.Component {
         </div>
         <div className="modal-background hidden"
           onClick={this.cancelMessage}></div>
+        <div className="token-modal-background"></div>
+        <div className="token-modal-container">
+            <h3>Enter API Token</h3>
+            <textarea
+              className="token-entry"
+              wrap="physical">
+            </textarea>
+            <div className="save-token-button"
+              onClick={this.saveToken}>Save</div>
+        </div>
+
         <div className="message-modal-container hidden">
           <textarea
             className="message-entry"
