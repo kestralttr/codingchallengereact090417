@@ -82,15 +82,15 @@ class App extends React.Component {
     $(".message-modal-container").addClass("hidden");
   }
 
-  sendMessage(id, message) {
+  sendMessage() {
     let url = "https://stage.skipio.com/api/v2/messages?token=" + this.state.apiToken;
-    message = "test";
+    let message = $(".message-entry").val();
     return function(e) {
-      console.log(id);
 
       $.ajax({
-        method:"GET",
+        method:"POST",
         url: url,
+        dataType: 'text',
         headers: {
           "content-type": 'application/json'
         },
@@ -99,7 +99,7 @@ class App extends React.Component {
                   "contact-00a08e17-b73f-446d-a3b7-17386be3d2e0"
                 ],
                 "message": {
-                  "body": "alo"
+                  "body": message
                 }
               }),
         success: (data) => {
@@ -131,7 +131,8 @@ class App extends React.Component {
             maxLength="160"
             wrap="physical">
           </textarea>
-          <div className="send-message-button">Send</div>
+          <div className="send-message-button"
+            onClick={this.sendMessage()}>Send</div>
         </div>
         <div className="contact-master">
           {this.state.contactData.map((contact,idx) => (
