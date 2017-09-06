@@ -21,6 +21,11 @@ class App extends React.Component {
     this.hideModalBackground = this.hideModalBackground.bind(this);
     this.revealMessageContainer = this.revealMessageContainer.bind(this);
     this.hideMessageContainer = this.hideMessageContainer.bind(this);
+    this.makeSMSRequest = this.makeSMSRequest.bind(this);
+    this.revealMessageSuccess = this.revealMessageSuccess.bind(this);
+    this.hideMessageSuccess = this.hideMessageSuccess.bind(this);
+    this.revealMessageFailure = this.revealMessageFailure.bind(this);
+    this.hideMessageFailure = this.hideMessageFailure.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +53,6 @@ class App extends React.Component {
   composeMessage(id) {
 
     return (e) => {
-      console.log("composing");
       this.revealModalBackground();
       this.revealMessageContainer();
       this.setState({
@@ -61,6 +65,8 @@ class App extends React.Component {
     e.preventDefault();
     this.hideModalBackground();
     this.hideMessageContainer();
+    this.hideMessageSuccess();
+    this.hideMessageFailure();
     this.setState({
       selectedID:null
     });
@@ -82,37 +88,69 @@ class App extends React.Component {
     $(".message-modal-container").addClass("hidden");
   }
 
-  sendMessage() {
+  revealMessageSuccess() {
+    $(".message-success").removeClass("hidden");
+  }
+
+  hideMessageSuccess() {
+    $(".message-success").addClass("hidden");
+  }
+
+  revealMessageFailure() {
+    $(".message-failure").removeClass("hidden");
+  }
+
+  hideMessageFailure() {
+    $(".message-failure").addClass("hidden");
+  }
+
+  makeSMSRequest(message) {
     let url = "https://stage.skipio.com/api/v2/messages?token=" + this.state.apiToken;
+
+    $.ajax({
+      method:"POST",
+      url: url,
+      dataType: 'text',
+      headers: {
+        "content-type": 'application/json'
+      },
+      data: JSON.stringify({
+              "recipients": [
+                "contact-" + this.state.selectedID
+              ],
+              "message": {
+                "body": message
+              }
+            }),
+      success: (data) => {
+        console.log("success");
+        console.log(data);
+        this.revealMessageSuccess();
+        setTimeout( () => {
+          this.hideMessageSuccess();
+          this.hideModalBackground();
+        },1500);
+      },
+      error: (xhr) => {
+        console.log("error");
+        console.log(xhr);
+        this.revealMessageFailure();
+        setTimeout( () => {
+          this.hideMessageFailure();
+          this.hideModalBackground();
+        },1500);
+      }
+    });
+  }
+
+  sendMessage() {
     let message = $(".message-entry").val();
-    return function(e) {
-
-      $.ajax({
-        method:"POST",
-        url: url,
-        dataType: 'text',
-        headers: {
-          "content-type": 'application/json'
-        },
-        data: JSON.stringify({
-                "recipients": [
-                  "contact-00a08e17-b73f-446d-a3b7-17386be3d2e0"
-                ],
-                "message": {
-                  "body": message
-                }
-              }),
-        success: (data) => {
-          console.log("success");
-          console.log(data);
-        },
-        error: (xhr) => {
-          console.log("error");
-          console.log(xhr);
-        }
-      });
-
-    };
+    $(".message-entry").val("");
+    this.makeSMSRequest(message);
+    this.setState({
+      selectedID:null
+    });
+    this.hideMessageContainer();
   }
 
   render() {
@@ -132,8 +170,10 @@ class App extends React.Component {
             wrap="physical">
           </textarea>
           <div className="send-message-button"
-            onClick={this.sendMessage()}>Send</div>
+            onClick={this.sendMessage}>Send</div>
         </div>
+        <div className="message-success hidden">Message Sent!</div>
+        <div className="message-failure hidden">Sending Failed</div>
         <div className="contact-master">
           {this.state.contactData.map((contact,idx) => (
             <div key={idx}

@@ -31,7 +31,7 @@ textarea:focus {
 }
 
 .screen-header {
-  background-color: rgba(50,250,50,0.3);
+  background-color: rgba(50,250,50,0.0);
   position:absolute;
   top:155px;
   left:50%;
@@ -39,11 +39,11 @@ textarea:focus {
   height:65px;
   transform:translateX(-50%);
   z-index:0;
-  border-bottom: 1px solid grey;
+  border-bottom: 2px solid grey;
 }
 
 .contact-master {
-  background-color: rgba(255,50,50,0.3);
+  background-color: rgba(255,255,255,0);
   position:absolute;
   top:220px;
   left:50%;
@@ -125,4 +125,28 @@ textarea:focus {
   bottom:5px;
   left:50%;
   cursor:pointer;
+}
+
+.message-success {
+  position: absolute;
+  font-size:20px;
+  color:white;
+  padding-top:6px;
+  padding-bottom:6px;
+  transform:translateX(-50%);
+  top:360px;
+  left:50%;
+  z-index:300;
+}
+
+.message-failure {
+  position: absolute;
+  font-size:20px;
+  color:white;
+  padding-top:6px;
+  padding-bottom:6px;
+  transform:translateX(-50%);
+  top:360px;
+  left:50%;
+  z-index:300;
 }
