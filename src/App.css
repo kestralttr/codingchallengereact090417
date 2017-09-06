@@ -1,1 +1,128 @@
 
+.hidden {
+  display:none;
+}
+
+body {
+  font-family: "Helvetica", sans-serif;
+}
+
+h2 {
+  text-align: center;
+}
+
+textarea {
+  resize:none;
+  border:none;
+  outline:0;
+  padding:0;
+}
+
+textarea:focus {
+  outline: 0;
+}
+
+.phone-image {
+  background: url('http://res.cloudinary.com/dzo2s4ovl/image/upload/v1504665948/iphoneasset_t9ocwk.png') no-repeat center;
+  background-size: contain;
+  height: 600px;
+  position: relative;
+  z-index:10;
+}
+
+.screen-header {
+  background-color: rgba(50,250,50,0.3);
+  position:absolute;
+  top:155px;
+  left:50%;
+  width:260px;
+  height:65px;
+  transform:translateX(-50%);
+  z-index:0;
+  border-bottom: 1px solid grey;
+}
+
+.contact-master {
+  background-color: rgba(255,50,50,0.3);
+  position:absolute;
+  top:220px;
+  left:50%;
+  width:254px;
+  height:385px;
+  transform:translateX(-50%);
+  z-index:20;
+  overflow:auto;
+}
+
+.contact-line {
+  padding-top:12px;
+  padding-bottom:12px;
+  padding-left:13px;
+  padding-right:13px;
+  position:relative;
+  cursor:pointer;
+}
+
+.contact-line:after {
+  content:"";
+  background-color: grey;
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform: translateX(-50%);
+  right:0;
+  height:1px;
+  width:90%;
+}
+
+.modal-background {
+  background-color: rgba(0,0,0,0.8);
+  position:absolute;
+  top:155px;
+  left:50%;
+  width:260px;
+  height:450px;
+  transform:translateX(-50%);
+  z-index:100;
+  cursor:pointer;
+}
+
+.message-modal-container {
+  background-color: rgba(255,255,255,0.95);
+  position: absolute;
+  top:285px;
+  left:50%;
+  width:200px;
+  height:160px;
+  transform:translateX(-50%);
+  z-index:110;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.message-entry {
+  background-color: rgba(0,0,0,0);
+  border: 1px solid grey;
+  font-size:14px;
+  position: absolute;
+  width:190px;
+  height:70%;
+  transform:translateX(-50%);
+  top:5px;
+  left:50%;
+  border-radius:5px;
+
+}
+
+.send-message-button {
+  border-radius: 5px;
+  background-color: yellow;
+  position: absolute;
+  width:100px;
+  padding-top:6px;
+  padding-bottom:6px;
+  transform:translateX(-50%);
+  bottom:5px;
+  left:50%;
+  cursor:pointer;
+}

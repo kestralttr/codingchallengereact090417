@@ -10,12 +10,17 @@ class App extends React.Component {
     this.state = {
       apiToken: "",
       contactData: [],
-      selectedContact: null,
-      isComposing: false
+      selectedID: null
     };
 
     this.renderOutContacts = this.renderOutContacts.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.composeMessage = this.composeMessage.bind(this);
+    this.cancelMessage = this.cancelMessage.bind(this);
+    this.revealModalBackground = this.revealModalBackground.bind(this);
+    this.hideModalBackground = this.hideModalBackground.bind(this);
+    this.revealMessageContainer = this.revealMessageContainer.bind(this);
+    this.hideMessageContainer = this.hideMessageContainer.bind(this);
   }
 
   componentDidMount() {
@@ -40,17 +45,52 @@ class App extends React.Component {
     });
   }
 
+  composeMessage(id) {
+
+    return (e) => {
+      console.log("composing");
+      this.revealModalBackground();
+      this.revealMessageContainer();
+      this.setState({
+        selectedID:id
+      });
+    };
+  }
+
+  cancelMessage(e) {
+    e.preventDefault();
+    this.hideModalBackground();
+    this.hideMessageContainer();
+    this.setState({
+      selectedID:null
+    });
+  }
+
+  revealModalBackground() {
+    $(".modal-background").removeClass("hidden");
+  }
+
+  hideModalBackground() {
+    $(".modal-background").addClass("hidden");
+  }
+
+  revealMessageContainer() {
+    $(".message-modal-container").removeClass("hidden");
+  }
+
+  hideMessageContainer() {
+    $(".message-modal-container").addClass("hidden");
+  }
+
   sendMessage(id, message) {
     let url = "https://stage.skipio.com/api/v2/messages?token=" + this.state.apiToken;
     message = "test";
     return function(e) {
       console.log(id);
 
-
       $.ajax({
-        method:"POST",
+        method:"GET",
         url: url,
-        dataType: "json",
         headers: {
           "content-type": 'application/json'
         },
@@ -63,11 +103,12 @@ class App extends React.Component {
                 }
               }),
         success: (data) => {
+          console.log("success");
           console.log(data);
         },
         error: (xhr) => {
-          console.log("Status Code: ", xhr.status);
-          console.log("Error Text: ", xhr.responseText);
+          console.log("error");
+          console.log(xhr);
         }
       });
 
@@ -78,10 +119,25 @@ class App extends React.Component {
     return (
       <div className="master-container">
         <h1>Now We Do React!</h1>
+        <div className="phone-image"></div>
+        <div className="screen-header">
+          <h2>React 6</h2>
+        </div>
+        <div className="modal-background hidden"
+          onClick={this.cancelMessage}></div>
+        <div className="message-modal-container hidden">
+          <textarea
+            className="message-entry"
+            maxLength="160"
+            wrap="physical">
+          </textarea>
+          <div className="send-message-button">Send</div>
+        </div>
         <div className="contact-master">
           {this.state.contactData.map((contact,idx) => (
             <div key={idx}
-              onClick={this.sendMessage(contact.id)}>
+              className="contact-line"
+              onClick={this.composeMessage(contact.id)}>
               {contact.first_name} {contact.last_name}
             </div>
           ))}
